@@ -75,17 +75,18 @@ By using this button, however, you cannot save your work.
 
 ## Run the Code
 
-Now that you have all the required software and materials, you need to run the code:
+Now that you have all the required software and materials, you need to open the workshop notebook in RStudio:
 
-Provide instructions on running the code, including how to load relevant software (RStudio, Jupyter Notebooks, etc.) and which file to open up. See other repositories for examples.
-
-Additionally, provide instructions on how to run code once it’s open (running Jupyter cells, RMarkdown cells, etc.).
+1. Launch the RStudio software.
+2. Use the file navigator to find the R-Census-Data folder you downloaded from Github.
+3. Navigate to the `lessons` workshop folder and open the file `Census.Rmd` in RStudio.
 
 # Additional Resources
 
-Check out the following resources to learn more about [Workshop topics]:
+Check out the following resources to learn more about Census data and R:
 
-* [Resource1](LinkToResource1): _Explain Resource 1_
+* [Getting Started with the U.S. Census (UC Berkeley Library)](https://guides.lib.berkeley.edu/USCensus/Intro): 
+* [Basic usage of tidycensus](https://walker-data.com/tidycensus/articles/basic-usage.html): Summary of basic operations in `tidycensus`
 * [Resource2](LinkToResource2): _Explain Resource 2_
 * [...]
 
