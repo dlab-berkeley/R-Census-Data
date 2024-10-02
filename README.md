@@ -1,27 +1,26 @@
-# D-Lab [WorkshopName] Workshop
+# D-Lab R Census Data Analysis & Mapping Workshop
 
 [![DataHub](https://img.shields.io/badge/launch-datahub-blue)](DATAHUB_LINK_HERE)
 [![Binder](https://mybinder.org/badge_logo.svg)](BINDER_LINK_HERE)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-This repository contains the materials for D-Lab [WorkshopName] workshop. 
+This repository contains the materials for D-Lab R Census Data Analysis & Mapping workshop. 
 
 ### Prerequisites
-We recommend attending [D-LabWorkshop1](D-LabWorkshop1Link),
-[D-LabWorkshop2](D-LabWorkshop2Link), and
-[AdditionalWorkshopsAsNeeded](LinksToWorkshops) prior to this workshop.
+This workshop builds on fundamental concepts introduced in [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals).
+The follow courses are also helpful, but not required:
+- [R Data Wrangling](https://github.com/dlab-berkeley/R-Data-Wrangling)
+- [R Data Visualization](https://github.com/dlab-berkeley/R-Data-Visualization)
+- [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals)
 
-Check D-Lab's [Learning Pathways](https://dlab-berkeley.github.io/dlab-workshops/python_path.html) to figure out which of our workshops to take!
+Check D-Lab's [Learning Pathways](https://dlab-berkeley.github.io/dlab-workshops/R_path.html) to figure out which of our workshops to take!
 
 ## Workshop Goals
 
-In this workshop, we provide [WorkshopGoal]. First, we’ll cover [Aim1]. Then,
-we’ll explore [Aim2]. 
+In this workshop, we provide an overview of conducting U.S. Census data analysis and visualization in R. First, we’ll cover the basic concepts of U.S. Census Data. Then,
+we’ll demonstrate how to call the census data API directly from R by using the R `tidycensus` package. 
 
-_Only if necessary:_ If you are not familiar with material in
-[D-LabWorkshop1](D-LabWorkshop1Link), [D-LabWorkshop2](D-LabWorkshop2Link), and
-[AdditionalWorkshopsAsNeeded](LinksToWorkshops), we recommend attending those
-workshops first.
+Basic familiarity with R _is_ assumed. If you are not familiar with material in [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals), we recommend attending that workshop first.
 
 ## Learning Objectives
 
@@ -39,18 +38,19 @@ This workshop does not cover the following:
 
 ## Installation Instructions
 
-We will use [RStudio/Python] to go through the workshop materials, which requires installation of [Software]. Complete the following steps:
+We will use RStudio to go through the workshop materials, which requires installation of both the R language and the RStudio software. Complete the following steps:
 
-1. This step(s) details software to download, with a link.
-2. Download these workshop materials:
+1. [Download R](https://cloud.r-project.org/): Follow the links according to the operating system that you are running. Download the package, and install R onto your computer. You should install the most recent version (at least version 4.0).
+2. [Download RStudio](https://rstudio.com/products/rstudio/download/#download): Install RStudio Desktop. This should be free. Do this after you have already installed R. The D-Lab strongly recommends an RStudio edition of 2022.02.0+443 "Prairie Trillium" or higher.
+3. Download these workshop materials:
     * Click the green "Code" button in the top right of the repository information.
     * Click "Download Zip".
     * Extract this file to a folder on your computer where you can easily access it (we recommend Desktop).
-3. Optional: if you’re familiar with git, you can instead clone this repository by opening a terminal and entering [GitCloneCommand].
+3. Optional: if you’re familiar with git, you can instead clone this repository by opening a terminal and entering [git clone git@github.com:dlab-berkeley/R-Census-Data.git].
 
-## Is [Language] not Working on Your Computer?
+## Is R not Working on Your Computer?
 
-If you do not have [Language] installed and the materials loaded on your
+If you do not have R installed and the materials loaded on your
 workshop by the time it starts, we *strongly* recommend using the UC Berkeley
 Datahub to run the materials for these lessons. You can access the DataHub by
 clicking the following button:
