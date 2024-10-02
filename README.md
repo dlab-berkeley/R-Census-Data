@@ -8,7 +8,8 @@ This repository contains the materials for D-Lab R Census Data Analysis & Mappin
 
 ### Prerequisites
 This workshop builds on fundamental concepts introduced in [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals).
-The follow courses are also helpful, but not required:
+
+The following courses are also helpful, but not required:
 - [R Data Wrangling](https://github.com/dlab-berkeley/R-Data-Wrangling)
 - [R Data Visualization](https://github.com/dlab-berkeley/R-Data-Visualization)
 - [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals)
