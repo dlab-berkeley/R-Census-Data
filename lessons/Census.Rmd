@@ -531,6 +531,8 @@ We've already spent some time looking at the share of housing units that are urb
 
 If we expand the "concept" column, we can see that the first several variables provide the median household income for specific race groups. If we look down far enough, we can see "Median Household Income in the Past 12 Months (in 2022 Inflation-Adjusted Dollars)" is represented by variable `B19013_001`. We'll use this one!
 
+**[Note: Potentially switch to race/ethnicity to demonstrate that concept]**
+
 ```{r}
 
 ## Download tract-level ACS census variables for Alameda County
