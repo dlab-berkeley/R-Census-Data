@@ -27,14 +27,15 @@ Basic familiarity with R _is_ assumed. If you are not familiar with material in 
 
 After this workshop, you will be able to:
 
-- [LearningObjective1].
-- [LearningObjective2].
-- [LearningObjective3].
+- Understand different types of census data and the types of variables that are available.
+- Understand the basic interface of the [data.census.gov](data.census.gov) website
+- Use the `tidycensus` package to find census variables and download census data tables
+- Produce graphs and maps of census data using ggplot and sf
 
 This workshop does not cover the following:
 
-- [NotCovered1]. These are covered in [D-LabWorkshopName](URL).
-- [NotCovered2]. These are covered in [D-LabWorkshopName](URL).
+- Principles of geospatial data analysis (map projections, spatial joins, etc.). These are covered in [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals).
+- Advanced principles of data visualization. These are covered in [R Data Visualization](https://github.com/dlab-berkeley/R-Data-Visualization).
 
 
 ## Installation Instructions
@@ -99,17 +100,20 @@ Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. Y
 
 # Other D-Lab [Language] Workshops
 
-Here are other [Language] workshops offered by the D-Lab:
+Here are other R workshops offered by the D-Lab:
 
 ## Basic Competency
 
-**Provide a list of workshops here.**
+* [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals)
+* [R Data Wrangling](https://github.com/dlab-berkeley/R-Data-Wrangling)
+* [R Data Visualization](https://github.com/dlab-berkeley/R-Data-Visualization)
 
 ## Intermediate/Advanced Competency
 
-**Provide a list of workshops here.**
+* [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals)
+* [R Machine Learning](https://github.com/dlab-berkeley/R-Machine-Learning)
+* [R Deep Learning](https://github.com/dlab-berkeley/R-Deep-Learning)
 
 # Contributors
 
-**Provide a list of contributors here, with links to their webpages (D-Lab or
-private).**
+[Alex Ramiller](https://dlab.berkeley.edu/people/alex-ramiller)
