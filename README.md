@@ -84,12 +84,12 @@ Now that you have all the required software and materials, you need to open the 
 
 # Additional Resources
 
-Check out the following resources to learn more about Census data and R:
+Check out the following resources to learn more about Census data and mapping R:
 
-* [Getting Started with the U.S. Census (UC Berkeley Library)](https://guides.lib.berkeley.edu/USCensus/Intro): 
+* [Getting Started with the U.S. Census (UC Berkeley Library)](https://guides.lib.berkeley.edu/USCensus/Intro): Berkeley Library overview of census data
 * [Basic usage of tidycensus](https://walker-data.com/tidycensus/articles/basic-usage.html): Summary of basic operations in `tidycensus`
-* [Resource2](LinkToResource2): _Explain Resource 2_
-* [...]
+* [Leaflet for R](https://rstudio.github.io/leaflet/): Introduction to interactive mapping with the `leaflet` package in R.
+* [IPUMS Data and R](https://cran.r-project.org/web/packages/ipumsr/vignettes/ipums.html): Introduction to working with Census microdata in R using the `ipumsr` package
 
 
 # About the UC Berkeley D-Lab
