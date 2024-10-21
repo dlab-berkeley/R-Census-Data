@@ -15,12 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Learning Objectives
 
-Welcome to Census Data Analysis and Mapping in R! Our goals for today's workshop are:
+Welcome to **Census Data Analysis and Mapping in R**! Our goals for today's workshop are:
 
-1.  Understand the basic features of census data and the types of research questions it can help answer
-2.  Learn how to navigate the interface of the [data.census.gov](data.census.gov) website
-3.  Learn how to use the tidycensus package to quickly find and download census data
-4.  Learn how to produce visualizations of census data using ggplot and sf
+1.  Understand the basic features of census data and learn how to navigate the interface of the [data.census.gov](data.census.gov) website
+2.  Learn how to use the `tidycensus` package to quickly download data from the Census API using the functions `get_decennial()`, `get_acs()`, and `get_pums()`
+3.  Produce data visualizations and explore real-world research questions using census data
 
 ------------------------------------------------------------------------
 
@@ -36,7 +35,7 @@ Welcome to Census Data Analysis and Mapping in R! Our goals for today's workshop
 
 📝 **Poll**: A zoom poll to help you learn.
 
-🎬 **Demo**: Showing off something more advanced so you know what you can use R for in the future.
+🎬 **Demo**: Showing off something more advanced so you know what you can use R for in the future.f
 
 ------------------------------------------------------------------------
 
@@ -451,7 +450,7 @@ ggplot() +
           aes(fill = pct_urban))
 ```
 
-🔔 **Question**: Do we notice any interesting patterns? Which states appear to be the most urban, and which states appear to be the most rural?
+🔔 **Question**: Which states appear to have the most urban and/or rural housing stock? Do you notice any interesting patterns?
 
 ## 3.6 Census Tabulation Units
 
@@ -614,13 +613,30 @@ ggplot() +
 mapview(med_hhinc, zcol="estimate")
 ```
 
-# Part 4: Challenges
+## 3.8 Fetching census microdata data with `get_pums`
+
+```{r}
+View(pums_variables)
+```
+
+```{r}
+get_pums()
+```
+
+# 🥊 Part 4: Challenge
 
 Let's take what we've learned and use census data to answer a research question!
 
-As we discussed at the beginning, there are many different types of research questions that census data can help us answer. Let's start with a simple descriptive question that we can easily investigate: What are the cheapest and most expensive places for renters in Alameda County?
+As we discussed at the beginning, there are many different types of research questions that census data can help us answer. For this exercise, we're going to replicate this Brookings Institute report on trends in U.S. immigration during the 1990s: \
+<https://www.brookings.edu/wp-content/uploads/2016/06/20040301_gateways.pdf>.
 
-💡 **Tip**: The best way to summarize rental housing costs is "median gross rent", which refers to the median housing cost for renters (including both the rent they directly pay to the landlord and the cost of utilities).
+This report was published all the way back in 2004, so this could use an update! The original report compared data from the 1990 and 2000 decennial censuses to analyze changes in immigration during the 1990s. For this analysis, let's update the analysis to focus on the 2010s.
+
+Because the decennial census has asked fewer questions since 2010, we'll want to use the American Community Survey. To cover the 2010s, let's compare 2010-2014 5-year estimates with 2015-2019 5-year estimates.
+
+⚠️ **Warning**: When comparing changes over time using 5-year estimates, avoid choosing two periods that overlap. Otherwise, your comparison will be comparing estimates based (at least in part) on the exact same observations!
+
+💡 **Tip**: Immigrants are identified within census terminology as "Foreign born", while individuals born in the United States are identified as "Native".
 
 Let's take this one step at a time, following the approach we took previously:
 
@@ -688,11 +704,4 @@ df2 <- get_acs(geography = "_____",       ## [County or Tract]
                county = "_______",              ## State
                output = "____",           ## "Wide" Format 
                geometry = ____)           
-
 ```
-
-# Possible Extensions
-
-🎬 **Demo**: Census data for survey weighting
-
-🎬 **Demo**: PUMS
