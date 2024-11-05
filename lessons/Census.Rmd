@@ -365,25 +365,16 @@ ggplot() +
 
 Some of the most common geographic tabulation units and their `tidycensus` function abbreviations are shown below, along with filters that can limit what data are returned. Required filters are in **bold**.
 
-+---------------------------------------------------------------+------------------------+-------------------+
 | Geography                                                     | Definition             | Filter(s)         |
-+===============================================================+========================+===================+
+|---------------------------------------------------------------|------------------------|-------------------|
 | "us"                                                          | United States          |                   |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "metropolitan statistical area/micropolitan statistical area" | Metropolitan Area      |                   |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "state"                                                       | State (or equivalent)  | state             |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "county"                                                      | County (or equivalent) | state, county     |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "place"                                                       | Census place           | state             |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "tract"                                                       | Census tract           | **state**, county |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "block group"                                                 | Census block group     | **state**, county |
-+---------------------------------------------------------------+------------------------+-------------------+
 | "block"                                                       | Census block           | **state, county** |
-+---------------------------------------------------------------+------------------------+-------------------+
 
 Almost all of these geographic levels can be called by either `get_acs()` or `get_decennial()`. The exception are census blocks, which are only available in the decennial census.
 
