@@ -4,7 +4,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](BINDER_LINK_HERE)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-This repository contains the materials for D-Lab R Census Data Analysis & Mapping workshop. 
+This repository contains the materials for D-Lab R Census Data Fundamentals workshop. 
 
 ### Prerequisites
 This workshop builds on fundamental concepts introduced in [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals).
