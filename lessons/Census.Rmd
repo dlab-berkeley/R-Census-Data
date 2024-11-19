@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Learning Objectives
 
-Welcome to Census Data Analysis and Mapping in R! Our goals for today's workshop are:
+Welcome to Census Data Fundamentals in R! Our goals for today's workshop are:
 
 1.  Understand the basic features of census data and learn how to navigate the interface of the [data.census.gov](data.census.gov) website
 2.  Learn how to use the `tidycensus` package to quickly download data from the Census API using the functions `get_decennial()`, `get_acs()`, and `get_pums()`
@@ -45,20 +45,17 @@ Throughout this workshop series, we will use the following icons:
 
 The U.S. Census Bureau is the "nation's leading provider of quality data about its people and economy". U.S. Census data contains a variety of information about the demographic, social, and economic characteristics of the U.S. population, as well as the physical and economic characteristics of housing.
 
-| Demographic   | Social            | Economic          | Housing           |
-|---------------|-------------------|-------------------|-------------------|
-| Sex           | Families          | Income            | Tenure            |
-| Age           | Education         | Benefits          | Occupancy         |
-| Race\*        | Marital Status    | Employment Status | Group Quarters    |
-| Ethnicity\*   | Fertility         | Occupation        | Housing Value     |
-| Relationships | Grandparents      | Industry          | Taxes & Insurance |
-|               | Veterans          | Commuting         | Utilities         |
-|               | Disability Status | Place of Work     | Mortgage          |
-|               | Language at Home  | Health Insurance  | Monthly Rent      |
-|               | Citizenship       |                   | Structure Type    |
-|               | Mobility          |                   |                   |
+| Demographic | Social | Economic | Housing |
+|-----------------|------------------|------------------|------------------|
+| Sex | Family Composition | Income | Vacancy |
+| Age | Education | Benefits | Tenure (Own/Rent) |
+| Fertility | Veteran Status | Employment Status | Group Quarters |
+| Marital Status | Disability Status | Occupation/Industry | Housing Quality |
+| Race/Ethnicity\* | Language | Commuting | Type of Structure |
+|  | Citizenship | Place of Work | Housing Value |
+|  | Migration | Health Insurance | Housing Costs (Mortgage, Rent, Utilities, Taxes, Insurance) |
 
-**\***The U.S. Census maintains separate definitions of **Race** ("White", "Black or African American", "Asian", etc.), and **Ethnicity** (whether someone identifies as "Hispanic or Latino").
+**\***The U.S. Census maintains separate definitions of **Race** ("White", "Black or African American", "American Indian or Alaska Native", "Asian", "Native Hawaiian or Pacific Islander", "Some other race", and "Two or more races"), and **Ethnicity** (whether someone identifies as "Hispanic or Latino"). These categories overlap, so one could for example identify as either "Hispanic White" or "Non-Hispanic White".
 
 Census data can be used to answer research questions across a variety of disciplines:
 
@@ -72,7 +69,7 @@ Census data can be used to answer research questions across a variety of discipl
 
 -   **Urban Planning:** What is the average commuting time for workers in different regions?
 
-**🔔 Question:** What other examples can you think of from your [own]{.ul} discipline based on the variables listed above? Are there any questions that you would be interested in answering with census data?
+**🔔 Question:** What other examples can you think of from your [own]{.underline} discipline based on the variables listed above? Are there any questions that you would be interested in answering with census data?
 
 ## 1.2 Census Data Formats
 
@@ -80,36 +77,36 @@ There are two primary public data sources provided by the U.S. Census Bureau:
 
 -   **Decennial Census**
 
-    -   Once every 10 years (since 1790!)
-
     -   Complete count of U.S. population and housing, including basic characteristics such as sex, age, race/ethnicity, family structure, vacancy, and housing tenure (owning vs. renting)
 
-    -   Between 1840 and 2000, also asked more detailed demographic/economic questions of a `sample` of the population
+    -   Mandated by the U.S. constitution, conducted once every 10 years (since 1790!)
+
+**🔔 Question:** Why is the decennial census mandated by the constitution? What are some reasons that the government would have an interest in maintaining a complete count of the population?
 
 -   **American Community Survey (ACS)**
 
-    -   Annual survey of 3.5 million randomly sampled households since 2005, asking detailed demographic/economic questions of a sample of the population
+    -   Annual survey of roughly 3.5 million randomly sampled households since 2005, asking detailed demographic/economic questions of a sample of the population
 
-    -   Because survey results are based on a sample, each estimate has a margin of error
+    -   Unlike decennial census: because results are based on a population sample instead of a full count, each estimate has a margin of error
 
     -   Two primary data products:
 
-        -   **ACS 1-Year Estimates:** data from a sample of the population collected for a single year[,]{.ul} useful when you want the most current data for areas with larger populations
+        -   **ACS 1-Year Estimates:** data from a sample of the population collected for a single year[,]{.underline} useful when you want the most current data for areas with larger populations
 
-        -   **ACS 5-Year Estimates:** data from 5 years of data pooled together, useful when you want [smaller margins of error]{.ul}, or [estimates for smaller geographic units]{.ul}
+        -   **ACS 5-Year Estimates:** data from 5 years of data pooled together, useful when you want [smaller margins of error]{.underline}, or [estimates for smaller geographic units]{.underline}
 
-**⚠️ Warning:** ACS data only provides *estimates*. Always pay close attention to the size of the margin of error, particularly for smaller areas and/or smaller populations.
+**⚠️ Warning:** Because ACS data only provides estimates, always pay close attention to the size of the margin of error, particularly for smaller areas and/or smaller populations.
 
 ## 1.3 Census Tabulation Units
 
-Census data is collected from individuals. The individual-level responses are called `microdata`. The use of microdata is limited due to privacy concerns. Most census data are made publicly available only when aggregated to larger geographic "tabulation units".
+Census data is collected from individuals. The individual-level responses are called **microdata**. The public release of microdata is limited due to privacy concerns. Most census data are made available only when aggregated to larger geographic "tabulation units".
 
 -   Some of these are real administrative units like states and counties.
 -   Others are statistical units created by the census, like census tracts and block groups.
 
 Tabulation units are generally nested: counties are nested within states, census tracts are nested within counties, etc. The primary hierarchy of nested units is highlighted below in red. There are also other geographic scales that align with political or administrative geographies, including "Places" (cities, towns, and unincorporated areas), and Congressional Districts. These tabulation units are highlighted in blue.
 
-![](images/levels.png)
+![](../images/levels.png)
 
 ## 1.4 [data.census.gov](data.census.gov)
 
@@ -121,11 +118,11 @@ Let's take a few minutes to do a live demo of the interface! You are encouraged 
 
 # Part 2: Introducing [`tidycensus`](https://walker-data.com/tidycensus/)
 
-In this tutorial, we will work through several exercises using the [`tidycensus`](https://walker-data.com/tidycensus/index.html) R package to fetch, wrangle, and map census data.
+In this workshop, we will work through several exercises using the [`tidycensus`](https://walker-data.com/tidycensus/index.html) R package to fetch, wrangle, and map census data.
 
 This R package was developed by [Kyle Walker](https://walkerke.github.io/) to make it easier to fetch data from the Census API (we'll explain that more in a second!).
 
-The key `tidycensus` functions we will use today are:
+The key `tidycensus` functions we will use in this section are:
 
 -   `census_api_key()`: makes your Census API key available to tidycensus
 
@@ -135,11 +132,9 @@ The key `tidycensus` functions we will use today are:
 
 -   `get_acs()`: fetches census data from American Community Survey 1-year estimates (beginning with 2005) or 5-year estimates (beginning with 2009)
 
--   `get_pums()`: fetches census microdata from American Community Survey 1-year estimates (beginning with 2005) or 5-year estimates (beginning with 2009)
-
 ## 2.1 Installing Packages
 
-Let's start by installing the packages we'll need! If there are any of these packages that you haven't installed yet.
+Let's start by installing the packages we'll need!
 
 ```{r}
 ## Install and load package management package
@@ -149,60 +144,40 @@ library(pacman)
 ## Load and/or install necessary packages
 p_load(tidyverse,  ## Data wrangling
        sf,         ## Spatial data
-       tidycensus) ## Interactive mapping
+       tidycensus) ## Census data
 ```
 
 ## 2.2 Getting a Census API Key
 
-You need a `Census API key` to programmatically fetch census data.
+You need a `Census API key` to programmatically fetch census data. An API (Application Programming Interface) allows different pieces of software to interact with one another. In this case, we are using an API to interface between RStudio and the Census Bureau's online database! A unique API key (user-specific string of characters) is often required to regulate API usage.
 
 -   Get it here: <https://api.census.gov/data/key_signup.html>
 
 -   The key will be sent to your email and you will need to click to activate it.
 
-*For more info on all available Census APIs see: <https://www.census.gov/data/developers/data-sets.html>*
-
 To use your Census API Key in R:
 
 1.  Copy and paste your Census API key from your email either:
 
+    -   Into a separate plain text file named "census.txt" or something similar (recommended)
     -   Directly into the R Script (see below)
-    -   Into a separate text file
 
-2.  Use the tidycensus function `census_api_key()` to register your API key with `tidycensus`.
+2.  Use the function `census_api_key()` to load your API key into the active R session
 
 ```{r, eval=FALSE}
 
-# Option 1: Copy your key directly into the R Script (with quotes around it!)
-census_api_key("THE_BIG_LONG_ALPHANUMERIC_API_KEY_YOU_GOT_FROM_CENSUS")
-
-# Option 2: Read from text file
+# Option 1: Read from text file
 census_api_key(read_lines("census.txt"))
+
+# Option 2: Copy your key directly into the R Script (with quotes around it!)
+census_api_key("THE_BIG_LONG_ALPHANUMERIC_API_KEY_YOU_GOT_FROM_CENSUS")
 ```
 
 ## 2.3 Finding Variables with `load_variables()`
 
-For any census dataset, we can use the tidycensus `load_variables` function to fetch all available variables.
+For any census dataset, we can use the tidycensus `load_variables()` function to fetch all available variables.
 
-This function requires two primary arguments: the `year` of the data, and the `dataset`.
-
-Dataset Options:
-
--   `sf1`: Decennial Census Summary File 1, featuring total population counts and basic summaries
-
--   `sf3`: Decennial Census Summary File 3, featuring estimates from decennial samples (year 2000 only)
-
--   `acs1`, `acs1/profile`, `acs1/subject`: 1-Year ACS Estimates, grouped into three categories:
-
-    -   `acs1`: "detailed" tables
-
-    -   `acs1/profile`: "profile" tables that give overviews of key statistics on topics like economic and housing characteristics
-
-    -   `acs1/subject` "subject" tables that focus on specific areas of interest
-
--   `acs5`, `acs5/profile`, `acs5/subject`: 5-year ACS Estimates, grouped into those same three categories
-
-**💡 Tip:** As a general rule, the "detailed" tables represented by `acs1` and `acs5` are the default for seeking specific variables. The `profile` and `subject` tables may have useful additional variables, including the *percentage* of the population within particular groups.
+This function requires two primary arguments: the `year` of the data, and the `dataset`. There are many different options for the `dataset` argument. For basic decennial census outputs, the primary dataset argument is `sf1` ("Summary File 1").
 
 ```{r}
 ## Load 2010 Decennial Variables (SF1)
@@ -237,9 +212,9 @@ units2010 <- get_decennial(geography = "state",       ## Tabulation Unit
 View(units2010)
 ```
 
-We successfully loaded the number of housing units by state! But this function lets us do a lot more. For example, we can pass [multiple]{.ul} variable names to the `variables` function argument at the same time. Below we add `H002002` for the number of housing units in urban areas.
+We successfully loaded the number of housing units by state! But this function lets us do a lot more. For example, we can pass [multiple]{.underline} variable names to the `variables` function argument at the same time. Below we add `H002002` for the number of housing units in urban areas.
 
-**💡 Tip:** We can also use the `variables` argument to [rename]{.ul} our variables so that they are easier to interpret! In the code below, we'll change the name of `H001001` to "total", and the name of `H002002` to "urban".
+**💡 Tip:** We can also use the `variables` argument to [rename]{.underline} our variables so that they are easier to interpret! In the code below, we'll change the name of `H001001` to "total", and the name of `H002002` to "urban".
 
 ```{r}
 
@@ -278,7 +253,7 @@ We can use the `ggplot2` package to create a horizontal bar chart.
 
 ```{r}
 ggplot() +                        ## Initialize plot
-  geom_col(data = units2010_wide, ## Add data
+  geom_col(data = units2010,      ## Add data
            aes(x = total,         ## Set x-axis as total housing
                y = NAME))         ## Set y-axis as state name
 ```
@@ -287,13 +262,13 @@ Let's clean up this chart, dividing the number of housing units by 1 million, an
 
 ```{r}
 ggplot() + 
-  geom_col(data = units2010_wide,
-           aes(x = total/1000000, ## Units / 1 million
-               y = reorder(NAME, total))) + ## Reorganize states by total housing units
-  theme_bw() + 
-  ggtitle("Housing Units by State (2010)") +
-  xlab("Housing Units (in Millions)") +
-  ylab("State")
+  geom_col(data = units2010,
+           aes(x = total/1000000,            ## Divide units by 1 million
+               y = reorder(NAME, total))) +  ## Reorganize states by total housing units
+  theme_bw() +                               ## Black and white theme
+  ggtitle("Housing Units by State (2010)") + ## Plot title
+  xlab("Housing Units (in Millions)") +      ## X-axis title
+  ylab("State")                              ## Y-axis title
 ```
 
 Even with these adjustments, this chart is a bit difficult to read and interpret. What if we want to create a map of this data, instead? For this, we need to adjust our data download to include the argument `geometry`:
@@ -315,7 +290,7 @@ The `tidycensus` package downloads spatial data as an `sf` ("simple features") o
 
 **💡 Tip:** We will only be covering basic principles of geospatial data in R in today's workshop. D-Lab's [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals) workshop is highly recommended for additional information on how to work with spatial data in R!
 
-Luckily, we can easily create a map of `sf` objects using the `ggplot2` package with the `geom_sf` function. This function does [not]{.ul} require `x` or `y` arguments, because these spatial data are already stored within the `geometry` column. Instead, we simply need to provide the `data` we wish to use, and the `fill` color:
+Luckily, we can easily create a map of `sf` objects using the `ggplot2` package with the `geom_sf` function. This function does [not]{.underline} require `x` or `y` arguments, because these spatial data are already stored within the `geometry` column. Instead, we simply need to provide the `data` we wish to use, and the `fill` color:
 
 ```{r}
 ggplot() + 
@@ -344,7 +319,7 @@ ggplot() +
           aes(fill = total))
 ```
 
-**💡 Tip:** Adding this argument has not only moved around Alaska and Hawaii: it has also changed the shape of the entire map! The background grid of the original map was straight lines, but now the grid lines are *curved*. This is because the `shift_geo` argument transforms the "coordinate reference system" of our spatial data. See D-Lab's [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals) workshop for more information about how coordinate systems work and why they are important!
+**💡 Tip:** Adding this argument has not only moved around Alaska and Hawaii: it has also changed the shape of the entire map! The background grid of the original map was straight lines, but now the grid lines are *curved*. This is because the `shift_geo` argument transforms the "coordinate reference system" of our spatial data. Check out D-Lab's [R Geospatial Fundamentals](https://github.com/dlab-berkeley/R-Geospatial-Fundamentals) workshop for more information about how coordinate systems work and why they are important!
 
 The map above isn't all that interesting -- we already know that California and Texas have large populations! We can combine multiple variables for greater insights. For example, what share of housing units in each state are located in urban areas?
 
@@ -363,20 +338,18 @@ ggplot() +
 
 ## 2.6 Census Tabulation Units in `tidycensus`
 
-Some of the most common geographic tabulation units and their `tidycensus` function abbreviations are shown below, along with filters that can limit what data are returned. Required filters are in **bold**.
+We used states for the above example, but census data are available at a variety of geography scales! Some of the most common geographic tabulation units and their `tidycensus` function abbreviations are shown below, along with filters that can limit what data are returned. Required filters are in **bold**.
 
-| Geography                                                     | Definition             | Filter(s)         |
-|---------------------------------------------------------------|------------------------|-------------------|
-| "us"                                                          | United States          |                   |
-| "metropolitan statistical area/micropolitan statistical area" | Metropolitan Area      |                   |
-| "state"                                                       | State (or equivalent)  | state             |
-| "county"                                                      | County (or equivalent) | state, county     |
-| "place"                                                       | Census place           | state             |
-| "tract"                                                       | Census tract           | **state**, county |
-| "block group"                                                 | Census block group     | **state**, county |
-| "block"                                                       | Census block           | **state, county** |
+| Geography | Definition | Filter(s) |
+|----------------------------------------|----------------|----------------|
+| "us" | United States |  |
+| "metropolitan statistical area/micropolitan statistical area" | Metropolitan Area |  |
+| "state" | State (or equivalent) | state |
+| "county" | County (or equivalent) | state, county |
+| "place" | Census place | state |
+| "tract" | Census tract | **state**, county |
 
-Almost all of these geographic levels can be called by either `get_acs()` or `get_decennial()`. The exception are census blocks, which are only available in the decennial census.
+**💡 Tip:** For a complete list of tabulation unit arguments, visit <https://walker-data.com/tidycensus/articles/basic-usage.html>
 
 Let's take a look at the same query for county-level data! The table above tells us that we can include optional arguments for specific states or counties when we're looking at county-level data. Let's focus on counties in California, using a new `state` argument.
 
@@ -412,9 +385,11 @@ ggplot() +
 
 So far, we've focused on data from the decennial census. But those data are only released every 10 years, and the most recent census (2020) has data quality concerns due to the impacts of the Covid-19 pandemic. So let's look at the other census data product: the American Community Survey (ACS)!
 
-As before, we can start by looking at the list of possible variables. We'll look at the most recent year of available data (`2022`), and we'll focus on the more stable 5-Year Estimates (`acs5`).
+As before, we can start by looking at the list of possible variables. We can choose between 1-year estimates (`acs1`) and 5-year estimates (`acs5`).
 
-**⚠️ Warning:** Remember that ACS variables are spread across three separate groups: detailed tables (`acs5`), profile tables (`acs5/profile`), and subject tables (`acs5/subject`). You may want to explore all three to find the specific variable(s) you're looking for.
+**⚠️ Warning:** ACS variables are spread across three separate groups of summary tables: detailed tables (`acs1` or `acs5`), profile tables (`acs1/profile` or `acs5/profile`), and subject tables (`acs1/subject` or `acs5/subject`). You may need to explore all three groups to find the specific variable(s) you're looking for.
+
+Let's look at the variables available for 5-year estimates ending in 2022 (which means that they are averaged over the period between 2018-2022):
 
 ```{r}
 
@@ -432,48 +407,64 @@ If we expand the "concept" column, we can see that the first several variables p
 
 ## Download tract-level ACS census variables for Alameda County
 
-mhi2022 <- get_acs(geography = "county",      ## Tabulation Unit
-                     variables = "B19013_001",  ## Median Household Income
-                     year = 2022,
-                     state = "CA")           
+mhi2022_acs5 <- get_acs(geography = "county",      ## Tabulation Unit
+                        variables = "B19013_001",  ## Median Household Income
+                        year = 2022,
+                        state = "CA")           
 
-View(mhi2022)
+View(mhi2022_acs5)
 ```
 
-By default, the `get_acs()` function pulls 5-Year ACS estimates. But what if we want more up-to-date estimates? We can switch to 1-Year ACS estimates by setting the argument `survey` equal to `acs1` (the argument for 5-Year estimates is `acs5`).
+By default, the `get_acs()` function pulls **5-Year** ACS estimates. But what if we want more up-to-date estimates? We can switch to 1-Year ACS estimates by setting the argument `survey` to `acs1` (the argument for 5-Year estimates is `acs5`).
 
 ```{r}
 
 ## Download tract-level ACS census variables for Alameda County
 
-mhi2022 <- get_acs(geography = "county",      ## Tabulation Unit
-                   variables = "B19013_001",  ## Median Household Income
-                   year = 2022,
-                   state = "CA",
-                   survey = "acs1")           
+mhi2022_acs1 <- get_acs(geography = "county",      ## Tabulation Unit
+                        variables = "B19013_001",  ## Median Household Income
+                        year = 2022,
+                        state = "CA",
+                        survey = "acs1")  
 
-View(mhi2022)
+View(mhi2022_acs1)
 ```
 
-**⚠️ Warning:** Larger geographies such as states, counties, and places have both 1-Year and 5-Year estimates available. Smaller geographies including tracts and block groups only provide 5-Year estimates due to small sample sizes.
+**🔔 Question:** See the outputs below. How do the values in the `moe` column differ between `mhi2022_acs5` and `mhi2022_acs1`? Why might this be?
+
+```{r}
+head(mhi2022_acs5$moe)
+head(mhi2022_acs1$moe)
+```
+
+**🔔 Question:** See the output below: why do you think `mhi2022_acs5` has more rows than `mhi2022_acs1`?
+
+```{r}
+nrow(mhi2022_acs5)
+nrow(mhi2022_acs1)
+```
+
+**⚠️ Warning:** Larger geographies such as states, counties, and places have both 1-Year and 5-Year estimates available. Geographies with fewer than 65,000 people only provide 5-Year estimates due to small sample sizes.
 
 ## 2.8 Visualizing ACS data
 
-Let's create a graph of our data! This time, however, we will also include an additional function called `geom_errorbar` so that we can see the "margin of error" surrounding our estimates. This function takes the arguments `xmin` and `xmax` (or `ymin` and `ymax` if the graph is oriented vertically). The bottom of our margin (`xmin`) will be the `estimate` [minus]{.ul} the margin of error (`moe`), and the top of our margin (`xmax`) will be the `estimate` [plus]{.ul} the margin of error.
+Let's create a graph of our data!
+
+This time we will also include an additional function called `geom_errorbar` so that we can see the **"margin of error"** surrounding our estimates. This function takes the arguments `xmin` and `xmax` (or `ymin` and `ymax` if the graph is oriented vertically). The bottom of our margin (`xmin`) will be the `estimate` [minus]{.underline} the margin of error (`moe`), and the top of our margin (`xmax`) will be the `estimate` [plus]{.underline} the margin of error.
 
 ```{r}
-ggplot(data = mhi2022) +
+ggplot(data = mhi2022_acs5) +
   geom_col(aes(x = estimate,
                y = reorder(NAME, estimate))) +
-  geom_errorbar(aes(xmin = estimate - moe,
-                    xmax = estimate + moe,
+  geom_errorbar(aes(xmin = estimate - moe,     ## Lower bound
+                    xmax = estimate + moe,     ## Upper bound
                     y = NAME))
 ```
 
 This graph isn't super readable because there are so many counties! We can simplify things a bit by focusing on counties with an estimated median household income greater than \$100,000:
 
 ```{r}
-ggplot(data = med_hhinc %>% filter(estimate > 100000)) +
+ggplot(data = mhi2022_acs5 %>% filter(estimate > 100000)) +
   geom_col(aes(x = estimate,
                y = reorder(NAME, estimate))) +
   geom_errorbar(aes(xmin = estimate - moe,
@@ -485,21 +476,21 @@ What if we're interested in the spatial distribution of median household incomes
 
 ```{r}
 
-mhi2022 <- get_acs(geography = "tract",      ## Tabulation Unit
-                   variables = c("medinc" = "B19013_001"),  ## Median Household Income
-                   year = 2022,               ## Year
-                   state = "CA",              ## State
-                   county = "Alameda",        ## County
-                   geometry = TRUE)           ## "Wide" Format 
+mhi2022_tract <- get_acs(geography = "tract",      ## Tabulation Unit
+                         variables = c("medinc" = "B19013_001"),  ## Median Household Income
+                         year = 2022,               ## Year
+                         state = "CA",              ## State
+                         county = "Alameda",        ## County
+                         geometry = TRUE)           ## "Wide" Format 
 
-View(mhi2022)
+View(mhi2022_tract)
 ```
 
-Now we can map out our data, using the `geom_sf()` function!
+Now we can map out our data!
 
 ```{r}
 ggplot() +
-  geom_sf(data = medincE,
+  geom_sf(data = mhi2022_tract,
           aes(fill = estimate))
 ```
 
@@ -509,7 +500,7 @@ ggplot() +
 
 Let's take what we've learned and use census data to answer a set of research questions!
 
-As we've discussed, there are many different types of research questions that census data can help us answer. For this exercise, we're going to replicate this figure from a 2004 [Brookings Institute report](https://www.brookings.edu/wp-content/uploads/2016/06/20040301_gateways.pdf) about trends in U.S. immigration during the 1990s:
+As we've discussed, there are many different types of research questions that census data can help us answer. For this exercise, we're going to create an updated version of this map from a 2004 [Brookings Institute report](https://www.brookings.edu/wp-content/uploads/2016/06/20040301_gateways.pdf) about trends in U.S. immigration during the 1990s:
 
 ![](../images/brookings.png)
 
@@ -517,13 +508,15 @@ As we've discussed, there are many different types of research questions that ce
 
 ## 🥊 Challenge 1: Which states had the largest foreign-born populations in 2010?
 
-Let's take this one step at a time, following the approach we took previously:
+Let's take this one step at a time:
 
-1.  First, we need to find the variable we're looking for, using the `load_variables` function
+1.  First, we need to find the variable we're looking for, using the `load_variables()` function
 
-**💡 Tip:** Immigrants are identified within census terminology as "Foreign born", while individuals born in the United States are identified as "Native".
+**💡 Tip:** Immigrants are identified within census terminology as "Foreign born", while individuals born in the United States are identified as "Native born".
 
-2.  Second, we input that variable into `get_acs` to retrieve our data
+2.  Second, we input that variable into `get_acs()` to retrieve our data
+
+**💡 Tip:** We're going to use `get_acs()` instead of `get_decennial()` here, because the 2010 decennial census does not provide information on foreign-born vs. native-born. The inclusion/exclusion of citizenship in the decennial census has been a matter of significant controversy: google "2020 census citizenship question" for more on this.
 
 ```{r}
 
@@ -552,9 +545,9 @@ ggplot() +
   theme_void()
 ```
 
-**🔔 Question:** Which states appear to have the highest numbers of foreign-born residents?
+**🔔 Question:** Which states appear to have the highest numbers of foreign-born residents? Which have the fewest?
 
-## 🥊 Challenge 2: Which states have experienced the largest *changes* in foreign-born population between 2010 and 2019?
+## 🥊 Challenge 2: Which states have experienced the largest *changes* in foreign-born population during the 2010s?
 
 **⚠️ Warning:** The onset of the Covid-19 pandemic in mid-2020 impacted census data collection. While the census did release a set of experimental estimates, these estimates are potentially unreliable. `tidycensus` returns an explanatory error message if you attempt to request 1-year estimates for 2020.
 
@@ -596,7 +589,7 @@ ggplot() +
 
 **🔔 Question:** Which states saw the largest growth in foreign-born population? Which states saw the smallest? How do these patterns compare to the original map from the 1990s?
 
-# Part 3: Introducing Census Microdata
+# Part 3: Census Microdata
 
 ## 3.1 Public Use Microdata Sample (PUMS)
 
@@ -608,7 +601,9 @@ PUMS data is drawn from the ACS. Because the ACS is only based on a sample of th
 
 ## 3.2 Fetching Census Microdata with `get_pums()`
 
-We can look at variable names for PUMS data by looking at the `pums_variables` table included in the `tidycensus` package:
+This section introduces a new function `get_pums()`, which fetches census microdata from American Community Survey 1-year estimates (beginning with 2005) or 5-year estimates (beginning with 2009).
+
+We can first look at the variable names for PUMS data by looking at the `pums_variables` table included in the `tidycensus` package:
 
 ```{r}
 View(pums_variables)
@@ -616,7 +611,7 @@ View(pums_variables)
 
 Once you've found your variables, you can enter those variable names into the `get_pums()` function. Be sure to also specify the geography and year(s) that you're interested in!
 
-**💡 Tip:** Observations can only be associated with larger geographies in order to ensure the anonymity of individual respondents. We can choose between state-level data, or data at the Public Use Microdata Area (**PUMA**) level. PUMAs are based on population, and may represent either subdivisions of counties or aggregates of multiple counties.
+**💡 Tip:** Observations can only be associated with big geographies to ensure the anonymity of individual respondents. We can choose between state-level data, or data at the Public Use Microdata Area (**PUMA**) level. PUMAs are based on population, and may represent either subdivisions of counties or aggregates of multiple counties.
 
 **⚠️ Warning:** All individual-level observations for entire US can be requested with the argument `state = "all"`, but be aware that this dataset is large and may take some time to download! Even downloading all of the data for California would take several minutes. For the sake of this exercise, let's download data for a single PUMA: "00101", which corresponds to the cities of Berkeley and Albany. A complete list of California PUMAs is available [here](https://www.census.gov/geographies/reference-maps/2010/geo/2010-pumas/california.html).
 
@@ -633,7 +628,7 @@ pums2019 <- get_pums(variables = c("NATIVITY",     ## Nativity status
 View(pums2019)
 ```
 
-The contents of this table look a little different than we're used to! Each row represents an individual that was surveyed by the Census Bureau. Besides the two variables that we requested, the fields are as follows:
+The contents of this table look a little different than we're used to! Each row represents an individual person that was surveyed by the Census Bureau. Besides the two variables that we requested, the fields are as follows:
 
 -   `SERIALNO`: Unique identifier associated with each household. Each identifier begins with the year in which the household was surveyed (i.e. "2019"), followed by the type of household: `HU` for housing units, and `GQ` for residents of "group quarters" housing, such as colleges, prisons, and group homes.
 
@@ -730,18 +725,26 @@ ggplot(pums2019_summary) +
 
 **🔔 Question:** What does this graph tell us about the education levels of foreign-born vs. native-born residents?
 
-## 🥊 Challenge 3: How does level of education impact *wages* for foreign-born vs. native-born workers?
+## 3.4 🥊 Challenge 3: How does level of education impact *wages* for foreign-born vs. native-born workers?
 
-Now let's try graphing the average wages by nativity (native-born vs. foreign-born) and education level. We're going to need to use the function `weighted.mean()` in order to weight the wages using the survey weights!
+Do highly educated foreign-born workers have higher wages than similarly educated native-born workers? What about workers without a high school degree?
+
+We can explore these questions by graphing average wages by nativity (native-born vs. foreign-born) *and* education level.
+
+**💡 Tip:** We're going to need to use the function `weighted.mean()` in order to calculated a weighted average of wages using the survey weights! `weighted.mean()` takes two arguments:
+
+-   `x`: the variable you want the average value of
+
+-   `w`: the column you want to to weight by
 
 ```{r}
 pums2019_income <- pums2019_filter %>% 
-  ## Group by each combination of nativity status and education level
+  ## Group by nativity status and education level
   group_by(______, ______) %>%
   ## Calculated *weighted* mean of wage
-  summarize(______ = weighted.mean(_____, _____))
+  summarize(______ = weighted.mean(x = _____, w = _____))
 
-ggplot(______) +
+ggplot(data = ______) +
   geom_col(aes(x = ______,                
                y = ______,      
                fill = ______),
