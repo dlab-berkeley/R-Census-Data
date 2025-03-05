@@ -23,7 +23,7 @@ Welcome to Census Data Fundamentals in R! Our goals for today's workshop are:
 
 ------------------------------------------------------------------------
 
-Throughout this workshop series, we will use the following icons:
+Throughout this workshop, we will use the following icons:
 
 **🔔 Question:** A quick question to help you understand what's going on.
 
@@ -46,7 +46,7 @@ Throughout this workshop series, we will use the following icons:
 The U.S. Census Bureau is the "nation's leading provider of quality data about its people and economy". U.S. Census data contains a variety of information about the demographic, social, and economic characteristics of the U.S. population, as well as the physical and economic characteristics of housing.
 
 | Demographic | Social | Economic | Housing |
-|-----------------|------------------|------------------|------------------|
+|------------------|------------------|------------------|------------------|
 | Sex | Family Composition | Income | Vacancy |
 | Age | Education | Benefits | Tenure (Own/Rent) |
 | Fertility | Veteran Status | Employment Status | Group Quarters |
@@ -110,9 +110,9 @@ Tabulation units are generally nested: counties are nested within states, census
 
 ## 1.4 [data.census.gov](data.census.gov)
 
-You can always download census data by going to the U.S. Census Bureau's purpose-built data interface, [data.census.gov](data.census.gov). This interface can be useful for exploring what census data are available, but is also fairly clunky and makes it difficult to download data in the optimal format for analysis.
+You can also download census data by going to the U.S. Census Bureau's purpose-built data interface, [data.census.gov](data.census.gov). This interface can be useful for exploring what census data are available, but is also fairly clunky and makes it difficult to download data in the optimal format for analysis.
 
-Let's take a few minutes to do a live demo of the interface! You are encouraged to follow along either by going to the website, and you can also check out the slides in the file `lessons/data_census_gov.pdf`.
+Check out the slides in the file `lessons/data_census_gov.pdf` for more information about how to use the web interface.
 
 ![](../images/dcg1.png)
 
@@ -138,7 +138,7 @@ Let's start by installing the packages we'll need!
 
 ```{r}
 ## Install and load package management package
-install.packages("pacman")
+# install.packages("pacman")
 library(pacman)
 
 ## Load and/or install necessary packages
@@ -167,7 +167,7 @@ To use your Census API Key in R:
 ```{r, eval=FALSE}
 
 # Option 1: Read from text file
-census_api_key(read_lines("census.txt"))
+census_api_key(read_lines("~/census.txt"))
 
 # Option 2: Copy your key directly into the R Script (with quotes around it!)
 census_api_key("THE_BIG_LONG_ALPHANUMERIC_API_KEY_YOU_GOT_FROM_CENSUS")
@@ -220,9 +220,9 @@ We successfully loaded the number of housing units by state! But this function l
 
 ## Download state-level decennial census variables
 units2010 <- get_decennial(geography = "state",              ## Tabulation Unit
-                        variables = c("total" = "H001001",   ## Total Housing
-                                      "urban" = "H002002"),  ## Urban Housing
-                        year = 2010)                         ## Year
+                           variables = c("total" = "H001001",   ## Total Housing
+                                         "urban" = "H002002"),  ## Urban Housing
+                           year = 2010)                         ## Year
 
 ## View the output
 View(units2010)
@@ -341,7 +341,7 @@ ggplot() +
 We used states for the above example, but census data are available at a variety of geography scales! Some of the most common geographic tabulation units and their `tidycensus` function abbreviations are shown below, along with filters that can limit what data are returned. Required filters are in **bold**.
 
 | Geography | Definition | Filter(s) |
-|----------------------------------------|----------------|----------------|
+|------------------------|------------------------|------------------------|
 | "us" | United States |  |
 | "metropolitan statistical area/micropolitan statistical area" | Metropolitan Area |  |
 | "state" | State (or equivalent) | state |
@@ -458,7 +458,7 @@ ggplot(data = mhi2022_acs5) +
                y = reorder(NAME, estimate))) +
   geom_errorbar(aes(xmin = estimate - moe,     ## Lower bound
                     xmax = estimate + moe,     ## Upper bound
-                    y = NAME))
+                    y = reorder(NAME, estimate)))
 ```
 
 This graph isn't super readable because there are so many counties! We can simplify things a bit by focusing on counties with an estimated median household income greater than \$100,000:
@@ -469,7 +469,7 @@ ggplot(data = mhi2022_acs5 %>% filter(estimate > 100000)) +
                y = reorder(NAME, estimate))) +
   geom_errorbar(aes(xmin = estimate - moe,
                     xmax = estimate + moe,
-                    y = NAME))
+                    y = reorder(NAME, estimate)))
 ```
 
 What if we're interested in the spatial distribution of median household incomes for individual neighborhoods? For this, we will use census tracts. Queries involving census tracts require you to specify a state, and include an optional argument for the county or counties you wish to look at. Let's look at Alameda County as an example:
@@ -521,27 +521,30 @@ Let's take this one step at a time:
 ```{r}
 
 ## Step 1: Find variable(s)
-vars <- load_variables(year = ____,
-                           dataset = "___")
+vars <- load_variables(year = 2010,
+                           dataset = "acs1")
 
 View(vars)
 ```
 
 ```{r}
-## Step 2: Load data for 2019
-df2010 <- get_acs(geography = "_____",
-                  variables = c("foreign_born_2010" = "__________"),
-                  year = ____,
-                  output = "____",
-                  geometry = ____,
-                  survey = "____")
+## Step 2: Load data for 2010
+df2010 <- get_acs(geography = "state",
+                  variables = c("foreign_born_2010" = "B05002_013"),
+                  year = 2010,
+                  output = "wide",
+                  geometry = TRUE,
+                  shift_geo = TRUE,
+                  survey = "acs1")
+
+View(df2010)
 ```
 
 ```{r}
 ## Step 3: Visualize data
 ggplot() + 
-  geom_sf(data = ______,
-          aes(fill = _______)) +
+  geom_sf(data = df2010,
+          aes(fill = foreign_born_2010E)) +
   theme_void()
 ```
 
@@ -560,12 +563,12 @@ Instead, let's look just before the pandemic, in 2019.
 How did patterns of immigration change over time? We can figure this out by changing the year of our API query and assigning the result to a new object.
 
 ```{r}
-df2019 <- get_acs(geography = "_____",
-                  variables = c("foreign_born_2019" = "__________"),
-                  year = ____,
-                  output = "____",
-                  geometry = ____,
-                  survey = "____")         
+df2019 <- get_acs(geography = "state",
+                  variables = c("foreign_born_2019" = "B05002_013"),
+                  year = 2019,
+                  output = "wide",
+                  geometry = FALSE,
+                  survey = "acs1")         
 ```
 
 We then need to join the two objects together. There are a few different ways to do this, but we're going to use the `left_join()` function. Next, we need to calculate percentage change to determine the change in the size of the foreign-born population.
@@ -573,16 +576,18 @@ We then need to join the two objects together. There are a few different ways to
 ```{r}
 df2010_2019 <- df2010 %>% left_join(df2019)
 
+View(df2010_2019)
+
 df2010_2019 <- df2010_2019 %>%
-  mutate(foreign_born_change = (______ - ______)/(______))
+  mutate(foreign_born_change = (foreign_born_2019E - foreign_born_2010E)/(foreign_born_2010E))
 ```
 
 Finally, we're ready to produce our plot!
 
 ```{r}
 ggplot() +
-  geom_sf(data = ______,
-          aes(fill = ______)) +
+  geom_sf(data = df2010_2019,
+          aes(fill = foreign_born_change)) +
   scale_fill_gradient(low = "orange", high = "blue") + ## Matching colors of original map
   theme_void()
 ```
@@ -645,7 +650,7 @@ Here's an example of how we can sum up the two different survey weight fields `W
 ```{r}
 sum(pums2019$PWGTP)
 
-sum(pums2019$WGTP[pums2022$SPORDER == 1])
+sum(pums2019$WGTP[pums2019$SPORDER == 1])
 ```
 
 **🔔 Question:** What do these two sums represent? Why did we need to filter the data for the second sum?
