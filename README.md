@@ -6,7 +6,7 @@
 
 This repository contains the materials for D-Lab R Census Data Fundamentals workshop. 
 
-### Prerequisites
+## Prerequisites
 This workshop builds on fundamental concepts introduced in [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals).
 
 The following courses are also helpful, but not required:
